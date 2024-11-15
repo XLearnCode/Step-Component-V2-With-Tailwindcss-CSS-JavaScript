@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step Component</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-md rounded-lg p-6 max-w-xl w-full">
+    <!-- Step Indicator -->
+    <div class="flex items-center justify-between mb-6 border border-purple-400 rounded-lg p-4">
+      <div class="step active">
+        <div class="step-number">01</div>
+        <p class="step-content text-indigo-600">Job Details</p>
+      </div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <p class="step-content text-gray-500">Application Form</p>
+      </div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <p class="step-content text-gray-500">Preview</p>
+      </div>
+    </div>
+
+    <!-- Step Content -->
+    <div id="step-content" class="text-center mb-6">
+      <p class="text-lg">Step 1: Job Details</p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-center">
+      <button id="back-btn" class="hidden px-4 py-2 bg-gray-300 text-gray-700 rounded mr-2" onclick="prevStep()">Back</button>
+      <button id="next-btn" class="px-4 py-2 bg-indigo-600 text-white rounded" onclick="nextStep()">Next</button>
+      <button id="send-btn" class="hidden px-4 py-2 bg-green-600 text-white rounded" onclick="sendForm()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+
+    function updateStep() {
+      const stepContent = document.getElementById('step-content');
+      const steps = document.querySelectorAll('.step');
+
+      if (currentStep === 1) {
+        stepContent.innerHTML = "<p class='text-lg'>Step 1: Job Details</p>";
+        document.getElementById('next-btn').classList.remove('hidden');
+        document.getElementById('back-btn').classList.add('hidden');
+        document.getElementById('send-btn').classList.add('hidden');
+      } else if (currentStep === 2) {
+        stepContent.innerHTML = "<p class='text-lg'>Step 2: Application Form</p>";
+        document.getElementById('back-btn').classList.remove('hidden');
+        document.getElementById('next-btn').classList.remove('hidden');
+        document.getElementById('send-btn').classList.add('hidden');
+      } else {
+        stepContent.innerHTML = "<p class='text-lg'>Step 3: Preview</p>";
+        document.getElementById('back-btn').classList.remove('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        document.getElementById('send-btn').classList.remove('hidden');
+      }
+
+      steps.forEach((step, index) => {
+        if (index < currentStep - 1) {
+          step.classList.add('active');
+          step.querySelector('.step-number').innerHTML = "✓";
+        } else if (index === currentStep - 1) {
+          step.classList.add('active');
+          step.querySelector('.step-number').innerHTML = `0${index + 1}`;
+        } else {
+          step.classList.remove('active');
+          step.querySelector('.step-number').innerHTML = `0${index + 1}`;
+        }
+      });
+    }
+
+    function nextStep() {
+      if (currentStep < 3) {
+        currentStep++;
+        updateStep();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStep();
+      }
+    }
+
+    function sendForm() {
+      alert("Form has been submitted!");
+    }
+
+    updateStep();
+  </script>
+</body>
+</html>
